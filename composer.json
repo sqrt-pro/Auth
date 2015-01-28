@@ -1,0 +1,18 @@
+{
+    "name": "sqrt-pro/auth",
+    "description": "Auth is part of SQRT Framework",
+    "homepage": "http://fw.sqrt.pro",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.0",
+        "sqrt-pro/db": "dev-master",
+        "symfony/http-foundation": "~2.6"
+    },
+    "autoload": {
+        "psr-0": {
+            "SQRT": "src"
+        }
+    },
+    "minimum-stability": "dev"
+}
