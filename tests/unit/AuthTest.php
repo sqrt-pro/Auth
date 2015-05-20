@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../init.php';
-
 use SQRT\DB\Manager;
 use SQRT\Auth;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -20,9 +18,10 @@ class authTest extends PHPUnit_Framework_TestCase
 
     $this->assertFalse($a->getUser(), 'Пользователь не залогинен');
 
-    $u = $a->login('admin', 1234);
+    $t = $a->login('admin', 1234);
 
-    $this->assertInstanceOf('TestUser', $u, 'Объект пользователя');
+    $this->assertInstanceOf('TestUser', $a->getUser(), 'Объект пользователя');
+    $this->assertEquals('1-abc', $t, 'Токен получен');
     $this->assertEquals('1-abc', $s->get($a->getTokenVar()), 'Токен сохранен в сессии');
     $this->assertInstanceOf('Symfony\Component\HttpFoundation\Cookie', $a->getCookieForResponse(), 'Подготовлены куки');
 
@@ -35,9 +34,10 @@ class authTest extends PHPUnit_Framework_TestCase
     $u->addRole('guest');
     $u->setId(2);
 
-    $a->loginUser($u);
+    $t = $a->loginUser($u);
 
     $this->assertEquals($u, $a->getUser(), 'Пользователь авторизован');
+    $this->assertEquals('2-abc', $t, 'Токен получен');
     $this->assertEquals('2-abc', $s->get($a->getTokenVar()), 'Токен сохранен в сессии');
 
     $c = $a->getCookieForResponse();

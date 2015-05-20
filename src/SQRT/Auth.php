@@ -50,23 +50,22 @@ abstract class Auth
     return $this->user ?: false;
   }
 
-  /** Авторизация пользователя по логину и паролю */
+  /** Авторизация пользователя по логину и паролю. Возвращает созданный токен */
   public function login($login, $password, $remindme = true)
   {
-    if ($this->user = $this->findUser($login, $password)) {
-      $this->saveToken($remindme);
-    }
+    $this->user = $this->findUser($login, $password);
 
-    return $this->getUser();
+    return $this->user
+      ? $this->saveToken($remindme)
+      : false;
   }
 
   /** Авторизация по объекту пользователя */
   public function loginUser($user, $remindme = true)
   {
     $this->user = $user;
-    $this->saveToken($remindme);
 
-    return $this->getUser();
+    return $this->saveToken($remindme);
   }
 
   /** @return static */
@@ -130,7 +129,7 @@ abstract class Auth
 
     $this->getSession()->set($this->getTokenVar(), $token);
 
-    return $this;
+    return $token;
   }
 
   /** Получение токена из сессии или cookies */
